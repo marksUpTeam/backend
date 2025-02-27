@@ -22,10 +22,16 @@ class AssignmentService(private val assignmentRepository: AssignmentRepository) 
 class FavouritesItemService(private val favouritesItemRepository: FavouritesItemRepository) {
     fun getAllFavouritesItems(): List<FavouritesItem> = favouritesItemRepository.findAll()
     fun getFavouritesItemById(id: Long): FavouritesItem? = favouritesItemRepository.findById(id).orElse(null)
+    fun getFavouritesByProfileId(id: Long): List<FavouritesItem> = favouritesItemRepository.findByProfile_Id(id)
 }
 
 @Service
 class ProfileService(private val profileRepository: ProfileRepository) {
     fun getAllProfiles(): List<Profile> = profileRepository.findAll()
     fun getProfileById(id: Long): Profile? = profileRepository.findById(id).orElse(null)
+}
+
+@Service
+class VKIntegrationService(private val vkIntegrationRepository: VKIntegrationRepository) {
+    fun getProfileByIdentifier(identifier: String): VKIntegrationProfile? = vkIntegrationRepository.getVKIntegrationProfileByIdentifier(identifier)
 }

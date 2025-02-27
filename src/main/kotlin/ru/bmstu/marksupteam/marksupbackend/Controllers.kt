@@ -52,12 +52,24 @@ class AssignmentsController(private val assignmentService: AssignmentService, pr
 
 @Controller
 @RequestMapping("/api/user/favourites")
-class FavouritesController(private val favouritesItemService: FavouritesItemService){
-
+class FavouritesController(private val favouritesItemService: FavouritesItemService) {
+    @GetMapping("/{idProfile}")
+    fun getFavourites(@PathVariable idProfile: Long): ResponseEntity<List<FavouritesItem>>{
+        val list = favouritesItemService.getFavouritesByProfileId(idProfile)
+        if (list.isEmpty()){
+            return ResponseEntity.notFound().build()
+        }
+        return ResponseEntity.ok(list)
+    }
 }
 
 @Controller
 @RequestMapping("/api/user")
-class ProfileController(private val profileService: ProfileService){
-
+class ProfileController(private val vkIntegrationService: VKIntegrationService){
+    @GetMapping("/{identifier}")
+    fun getByIdentifier(@PathVariable identifier: String): ResponseEntity<Profile>{
+        val vkIntegrationProfile = vkIntegrationService.getProfileByIdentifier(identifier) ?: return ResponseEntity.notFound().build()
+        val profile = vkIntegrationProfile.profile
+        return ResponseEntity.ok(profile)
+    }
 }

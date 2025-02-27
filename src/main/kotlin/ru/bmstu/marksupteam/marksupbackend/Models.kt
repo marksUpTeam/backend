@@ -164,6 +164,17 @@ data class Profile(
 
 }
 
+@Entity
+data class VKIntegrationProfile(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0,
+
+    @OneToOne
+    val profile: Profile,
+
+    val identifier: String
+)
+
 enum class AssignmentStatus {
     Assigned, Completed, Defended
 }
