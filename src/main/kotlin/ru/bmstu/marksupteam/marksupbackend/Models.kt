@@ -2,7 +2,6 @@ package ru.bmstu.marksupteam.marksupbackend
 
 import jakarta.persistence.*
 import kotlinx.datetime.*
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters
 
 
 @Entity
@@ -16,8 +15,8 @@ data class Class(
     @ManyToOne
     val teacher: Teacher,
 
-    @ManyToMany
-    val students: List<Student>,
+    @ManyToOne
+    val student: Student,
 
     @Convert(converter = LocalDateTimeConverter::class)
     val datetimeStart: LocalDateTime,
