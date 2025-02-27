@@ -14,6 +14,8 @@ class ClassService(private val classRepository: ClassRepository) {
 class AssignmentService(private val assignmentRepository: AssignmentRepository) {
     fun getAllAssignments(): List<Assignment> = assignmentRepository.findAll()
     fun getAssignmentById(id: Long): Assignment? = assignmentRepository.findById(id).orElse(null)
+    fun getAssignmentsByTeacher(teacher: Teacher): List<Assignment> = assignmentRepository.findByTeacher(teacher)
+    fun getAssignmentsByStudent(student: Student): List<Assignment> = assignmentRepository.findByStudent(student)
 }
 
 @Service
