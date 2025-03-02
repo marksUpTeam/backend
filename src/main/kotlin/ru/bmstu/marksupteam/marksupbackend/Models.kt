@@ -172,6 +172,7 @@ data class VKIntegrationProfile(
     @OneToOne
     val profile: Profile,
 
+    @Column(unique = true)
     val identifier: String
 )
 

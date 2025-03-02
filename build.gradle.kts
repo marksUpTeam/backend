@@ -37,6 +37,11 @@ dependencies {
 
     //datetime
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
+
+    //jwt
+    implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 }
 
 kotlin {
