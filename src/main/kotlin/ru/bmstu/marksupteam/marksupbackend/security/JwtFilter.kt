@@ -18,10 +18,8 @@ class JwtFilter(private val publicKey: PublicKey) : OncePerRequestFilter() {
         filterChain: FilterChain
     ) {
         val authHeader = request.getHeader("Authorization")
-        println(authHeader)
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             val authToken = authHeader.substring(7)
-            println(authToken)
             try{
                 val claims = Jwts.parser().setSigningKey(publicKey).parseClaimsJws(authToken).body
                 val expirationTime = claims.expiration.time
@@ -50,6 +48,7 @@ class JwtFilter(private val publicKey: PublicKey) : OncePerRequestFilter() {
             }
         } else {
             SecurityContextHolder.clearContext()
+            println("Unauthorized")
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
             return
         }

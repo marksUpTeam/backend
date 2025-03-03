@@ -33,5 +33,5 @@ class ProfileService(private val profileRepository: ProfileRepository) {
 
 @Service
 class VKIntegrationService(private val vkIntegrationRepository: VKIntegrationRepository) {
-    fun getProfileByIdentifier(identifier: String): VKIntegrationProfile? = vkIntegrationRepository.getVKIntegrationProfileByIdentifier(identifier)
+    fun getProfileByIdentifier(identifier: String): VKIntegrationProfile? = vkIntegrationRepository.getVKIntegrationProfileByIdentifier(identifier).orElse(null)
 }

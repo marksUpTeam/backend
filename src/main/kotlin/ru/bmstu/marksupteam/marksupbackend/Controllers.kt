@@ -101,10 +101,12 @@ class ProfileController(private val vkIntegrationService: VKIntegrationService){
 
 @Controller
 @RequestMapping("/api")
-class ServiceController(){
+class ServiceController(private val vkIntegrationService: VKIntegrationService){
     @GetMapping
     fun testConnection(): ResponseEntity<String>{
         val auth = SecurityContextHolder.getContext().authentication
-        return ResponseEntity.ok(auth.name)
+        println(auth.name)
+        vkIntegrationService.getProfileByIdentifier(auth.name) ?: return ResponseEntity.notFound().build()
+        return ResponseEntity.ok("exists")
     }
 }

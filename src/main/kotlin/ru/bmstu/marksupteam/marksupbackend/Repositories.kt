@@ -1,6 +1,7 @@
 package ru.bmstu.marksupteam.marksupbackend
 
 import org.springframework.data.jpa.repository.JpaRepository
+import java.util.Optional
 
 interface ClassRepository : JpaRepository<Class, Long> {
     fun findAllByTeacher(teacher: Teacher): List<Class>
@@ -15,5 +16,5 @@ interface FavouritesItemRepository : JpaRepository<FavouritesItem, Long> {
 }
 interface ProfileRepository : JpaRepository<Profile, Long>
 interface VKIntegrationRepository: JpaRepository<VKIntegrationProfile, Long> {
-    fun getVKIntegrationProfileByIdentifier(identifier: String): VKIntegrationProfile
+    fun getVKIntegrationProfileByIdentifier(identifier: String): Optional<VKIntegrationProfile>
 }

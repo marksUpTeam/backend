@@ -19,7 +19,7 @@ class SecurityConfig(private val jwtFilter: JwtFilter) {
         http.csrf { it.disable() }.sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
                 it.anyRequest().authenticated()
-            }.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
+            }.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java).requiresChannel{it.anyRequest().requiresSecure()}
 
         return http.build()
     }
