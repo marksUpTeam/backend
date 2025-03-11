@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import java.security.AuthProvider
@@ -90,12 +91,28 @@ class FavouritesController(private val favouritesItemService: FavouritesItemServ
 
 @Controller
 @RequestMapping("/api/user")
-class ProfileController(private val vkIntegrationService: VKIntegrationService){
-    @GetMapping("/{identifier}")
-    fun getByIdentifier(@PathVariable identifier: String): ResponseEntity<Profile>{
+class ProfileController(private val vkIntegrationService: VKIntegrationService, private val profileService: ProfileService) {
+
+    fun getByIdentifier(identifier: String): ResponseEntity<Profile>{
         val vkIntegrationProfile = vkIntegrationService.getProfileByIdentifier(identifier) ?: return ResponseEntity.notFound().build()
         val profile = vkIntegrationProfile.profile
         return ResponseEntity.ok(profile)
+    }
+
+    @GetMapping()
+    fun getProfileResolveIdAuto(): ResponseEntity<Profile>{
+        val auth = SecurityContextHolder.getContext().authentication
+        return getByIdentifier(auth.name)
+    }
+
+    @PostMapping()
+    fun postProfileResolveIdAuto(@RequestBody profile: Profile): ResponseEntity<String>{
+        try {
+            profileService.modifyProfile(profile)
+            return ResponseEntity.ok("Profile ${profile.id} updated")
+        } catch (e: Exception) {
+            return ResponseEntity.badRequest().build()
+        }
     }
 }
 
@@ -105,7 +122,7 @@ class ServiceController(private val vkIntegrationService: VKIntegrationService){
     @GetMapping
     fun testConnection(): ResponseEntity<String>{
         val auth = SecurityContextHolder.getContext().authentication
-        println(auth.name)
+        //println(auth.name)
         vkIntegrationService.getProfileByIdentifier(auth.name) ?: return ResponseEntity.notFound().build()
         return ResponseEntity.ok("exists")
     }

@@ -29,6 +29,9 @@ class FavouritesItemService(private val favouritesItemRepository: FavouritesItem
 class ProfileService(private val profileRepository: ProfileRepository) {
     fun getAllProfiles(): List<Profile> = profileRepository.findAll()
     fun getProfileById(id: Long): Profile? = profileRepository.findById(id).orElse(null)
+    fun modifyProfile(profile: Profile) {
+        profileRepository.save(profile)
+    }
 }
 
 @Service
