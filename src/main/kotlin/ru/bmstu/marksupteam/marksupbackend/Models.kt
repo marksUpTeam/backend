@@ -126,7 +126,10 @@ data class Parent(
     val person: Person,
 
     @ManyToMany
-    val children: List<Student>
+    val children: List<Student>,
+
+    @OneToOne
+    val currentChild: Student
 )
 
 @Entity
