@@ -37,6 +37,9 @@ class ClassController(private val classService: ClassService, private val profil
         val vkId = SecurityContextHolder.getContext().authentication.name
         val vkIntegrationProfile = vkIntegrationService.getProfileByIdentifier(vkId)
         val profile = vkIntegrationProfile?.profile ?: return ResponseEntity.notFound().build()
+        if (profile.parent != null) {
+            return ResponseEntity.ok(classService.getClassesByStudent(profile.parent!!.currentChild))
+        }
         return getClassesByProfileId(profile.id)
     }
 }
@@ -63,6 +66,9 @@ class AssignmentsController(private val assignmentService: AssignmentService, pr
         val vkId = SecurityContextHolder.getContext().authentication.name
         val vkIntegrationProfile = vkIntegrationService.getProfileByIdentifier(vkId)
         val profile = vkIntegrationProfile?.profile ?: return ResponseEntity.notFound().build()
+        if (profile.parent != null) {
+            return ResponseEntity.ok(assignmentService.getAssignmentsByStudent(profile.parent!!.currentChild))
+        }
         return getAssignmentsByProfileId(profile.id)
     }
 }
@@ -111,7 +117,7 @@ class ProfileController(private val vkIntegrationService: VKIntegrationService, 
             profileService.modifyProfile(profile)
             return ResponseEntity.ok("Profile ${profile.id} updated")
         } catch (e: Exception) {
-            return ResponseEntity.badRequest().build()
+            return ResponseEntity.internalServerError().build()
         }
     }
 }
