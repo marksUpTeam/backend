@@ -42,6 +42,16 @@ class ClassController(private val classService: ClassService, private val profil
         }
         return getClassesByProfileId(profile.id)
     }
+
+    @PostMapping
+    fun addClass(@RequestBody classEntry: Class): ResponseEntity<Class> {
+        runCatching {
+            return ResponseEntity.ok(classService.addClass(classEntry))
+        }.onFailure {
+            return ResponseEntity.internalServerError().build()
+        }
+        return ResponseEntity.badRequest().build()
+    }
 }
 
 @Controller
@@ -70,6 +80,16 @@ class AssignmentsController(private val assignmentService: AssignmentService, pr
             return ResponseEntity.ok(assignmentService.getAssignmentsByStudent(profile.parent!!.currentChild))
         }
         return getAssignmentsByProfileId(profile.id)
+    }
+
+    @PostMapping
+    fun addAssignment(@RequestBody assignment: Assignment): ResponseEntity<Assignment> {
+        runCatching {
+            return ResponseEntity.ok(assignmentService.addAssignment(assignment))
+        }.onFailure {
+            return ResponseEntity.badRequest().build()
+        }
+        return ResponseEntity.badRequest().build()
     }
 }
 
@@ -128,7 +148,6 @@ class ServiceController(private val vkIntegrationService: VKIntegrationService){
     @GetMapping
     fun testConnection(): ResponseEntity<String>{
         val auth = SecurityContextHolder.getContext().authentication
-        //println(auth.name)
         vkIntegrationService.getProfileByIdentifier(auth.name) ?: return ResponseEntity.notFound().build()
         return ResponseEntity.ok("exists")
     }
