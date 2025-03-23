@@ -24,8 +24,10 @@ data class Class(
     @Convert(converter = LocalDateTimeConverter::class)
     val datetimeEnd: LocalDateTime,
 
-    @OneToMany
-    val assignmentsDue: List<Assignment>
+    @ManyToOne
+    val assignmentsDue: Assignment,
+
+    val teacherComment: String
 )
 
 @Entity
@@ -104,6 +106,15 @@ data class Discipline(
 )
 
 @Entity
+data class DisciplineGrade(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0,
+    @ManyToOne
+    val discipline: Discipline,
+    val grade: Float
+)
+
+@Entity
 data class Teacher(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
@@ -140,7 +151,10 @@ data class Student(
     @ManyToOne
     val person: Person,
 
-    val description: String
+    val description: String,
+
+    @ManyToMany
+    val disciplineGrades: List<DisciplineGrade>
 )
 
 @Entity
