@@ -113,6 +113,16 @@ class FavouritesController(private val favouritesItemService: FavouritesItemServ
         return getFavourites(profile.id)
     }
 
+    @PostMapping
+    fun addFavouritesItem(@RequestBody favItem: FavouritesItem): ResponseEntity<FavouritesItem> {
+        runCatching {
+            return ResponseEntity.ok(favouritesItemService.addFavouriteItem(favItem))
+        }.onFailure {
+            return ResponseEntity.badRequest().build()
+        }
+        return ResponseEntity.badRequest().build()
+    }
+
 }
 
 @Controller

@@ -25,6 +25,7 @@ class FavouritesItemService(private val favouritesItemRepository: FavouritesItem
     fun getAllFavouritesItems(): List<FavouritesItem> = favouritesItemRepository.findAll()
     fun getFavouritesItemById(id: Long): FavouritesItem? = favouritesItemRepository.findById(id).orElse(null)
     fun getFavouritesByProfileId(id: Long): List<FavouritesItem> = favouritesItemRepository.findByProfile_Id(id)
+    fun addFavouriteItem(favItem: FavouritesItem): FavouritesItem = favouritesItemRepository.save(favItem)
 }
 
 @Service
