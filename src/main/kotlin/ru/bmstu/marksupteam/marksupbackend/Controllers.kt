@@ -160,7 +160,7 @@ class ServiceController(private val vkIntegrationService: VKIntegrationService){
     fun testConnection(): ResponseEntity<String>{
         val auth = SecurityContextHolder.getContext().authentication
         vkIntegrationService.getProfileByIdentifier(auth.name) ?: return ResponseEntity.notFound().build()
-        return ResponseEntity.ok("exists")
+        return ResponseEntity.ok("\"exists\"")
     }
 }
 
