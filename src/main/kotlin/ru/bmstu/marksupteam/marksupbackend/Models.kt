@@ -125,7 +125,10 @@ data class Teacher(
     @ManyToMany
     val disciplines: List<Discipline>,
 
-    val description: String
+    val description: String,
+
+    @ManyToMany
+    val assignedStudents: List<Student>
 )
 
 @Entity
@@ -152,6 +155,9 @@ data class Student(
     val person: Person,
 
     val description: String,
+
+    @ManyToMany
+    val assignedTeachers: List<Teacher>,
 
     @ManyToMany
     val disciplineGrades: List<DisciplineGrade>

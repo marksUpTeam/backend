@@ -52,6 +52,7 @@ class ClassController(private val classService: ClassService, private val profil
         }
         return ResponseEntity.badRequest().build()
     }
+
 }
 
 @Controller
@@ -162,3 +163,7 @@ class ServiceController(private val vkIntegrationService: VKIntegrationService){
         return ResponseEntity.ok("exists")
     }
 }
+
+@Controller
+@RequestMapping("/api/students")
+class StudentsController(private val vkIntegrationService: VKIntegrationService, private val profileService: ProfileService) {}
