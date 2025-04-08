@@ -1,20 +1,24 @@
-package ru.bmstu.marksupteam.marksupbackend
+package ru.bmstu.marksupteam.marksupbackend.controllers
 
-import org.apache.tomcat.util.http.parser.Authorization
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import java.security.AuthProvider
+import org.springframework.web.bind.annotation.RestController
+import ru.bmstu.marksupteam.marksupbackend.models.Assignment
+import ru.bmstu.marksupteam.marksupbackend.models.Class
+import ru.bmstu.marksupteam.marksupbackend.models.FavouritesItem
+import ru.bmstu.marksupteam.marksupbackend.models.Profile
+import ru.bmstu.marksupteam.marksupbackend.services.AssignmentService
+import ru.bmstu.marksupteam.marksupbackend.services.ClassService
+import ru.bmstu.marksupteam.marksupbackend.services.FavouritesItemService
+import ru.bmstu.marksupteam.marksupbackend.services.ProfileService
+import ru.bmstu.marksupteam.marksupbackend.services.VKIntegrationService
 
 
-@Controller
+@RestController
 @RequestMapping("/api/classes")
 class ClassController(private val classService: ClassService, private val profileService: ProfileService, private val vkIntegrationService: VKIntegrationService){
     fun getClassesByProfileId(idProfile: Long): ResponseEntity<List<Class>>{
@@ -55,7 +59,7 @@ class ClassController(private val classService: ClassService, private val profil
 
 }
 
-@Controller
+@RestController
 @RequestMapping("/api/assignments")
 class AssignmentsController(private val assignmentService: AssignmentService, private val profileService: ProfileService, private val vkIntegrationService: VKIntegrationService) {
     fun getAssignmentsByProfileId(idProfile: Long): ResponseEntity<List<Assignment>>{
@@ -94,7 +98,7 @@ class AssignmentsController(private val assignmentService: AssignmentService, pr
     }
 }
 
-@Controller
+@RestController
 @RequestMapping("/api/user/favourites")
 class FavouritesController(private val favouritesItemService: FavouritesItemService, private val vkIntegrationService: VKIntegrationService) {
 
@@ -126,44 +130,8 @@ class FavouritesController(private val favouritesItemService: FavouritesItemServ
 
 }
 
-@Controller
-@RequestMapping("/api/user")
-class ProfileController(private val vkIntegrationService: VKIntegrationService, private val profileService: ProfileService) {
 
-    fun getByIdentifier(identifier: String): ResponseEntity<Profile>{
-        val vkIntegrationProfile = vkIntegrationService.getProfileByIdentifier(identifier) ?: return ResponseEntity.notFound().build()
-        val profile = vkIntegrationProfile.profile
-        return ResponseEntity.ok(profile)
-    }
 
-    @GetMapping()
-    fun getProfileResolveIdAuto(): ResponseEntity<Profile>{
-        val auth = SecurityContextHolder.getContext().authentication
-        return getByIdentifier(auth.name)
-    }
-
-    @PostMapping()
-    fun postProfileResolveIdAuto(@RequestBody profile: Profile): ResponseEntity<String>{
-        try {
-            profileService.modifyProfile(profile)
-            return ResponseEntity.ok("Profile ${profile.id} updated")
-        } catch (e: Exception) {
-            return ResponseEntity.internalServerError().build()
-        }
-    }
-}
-
-@Controller
-@RequestMapping("/api")
-class ServiceController(private val vkIntegrationService: VKIntegrationService){
-    @GetMapping
-    fun testConnection(): ResponseEntity<String>{
-        val auth = SecurityContextHolder.getContext().authentication
-        vkIntegrationService.getProfileByIdentifier(auth.name) ?: return ResponseEntity.notFound().build()
-        return ResponseEntity.ok("\"exists\"")
-    }
-}
-
-@Controller
+@RestController
 @RequestMapping("/api/students")
 class StudentsController(private val vkIntegrationService: VKIntegrationService, private val profileService: ProfileService) {}

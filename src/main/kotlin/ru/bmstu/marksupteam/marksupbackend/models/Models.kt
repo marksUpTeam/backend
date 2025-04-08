@@ -1,4 +1,4 @@
-package ru.bmstu.marksupteam.marksupbackend
+package ru.bmstu.marksupteam.marksupbackend.models
 
 import jakarta.persistence.*
 import kotlinx.datetime.*

@@ -1,6 +1,18 @@
-package ru.bmstu.marksupteam.marksupbackend
+package ru.bmstu.marksupteam.marksupbackend.services
 
 import org.springframework.stereotype.Service
+import ru.bmstu.marksupteam.marksupbackend.models.Assignment
+import ru.bmstu.marksupteam.marksupbackend.models.repos.AssignmentRepository
+import ru.bmstu.marksupteam.marksupbackend.models.Class
+import ru.bmstu.marksupteam.marksupbackend.models.repos.ClassRepository
+import ru.bmstu.marksupteam.marksupbackend.models.FavouritesItem
+import ru.bmstu.marksupteam.marksupbackend.models.repos.FavouritesItemRepository
+import ru.bmstu.marksupteam.marksupbackend.models.Profile
+import ru.bmstu.marksupteam.marksupbackend.models.repos.ProfileRepository
+import ru.bmstu.marksupteam.marksupbackend.models.Student
+import ru.bmstu.marksupteam.marksupbackend.models.Teacher
+import ru.bmstu.marksupteam.marksupbackend.models.VKIntegrationProfile
+import ru.bmstu.marksupteam.marksupbackend.models.repos.VKIntegrationRepository
 
 @Service
 class ClassService(private val classRepository: ClassRepository) {
