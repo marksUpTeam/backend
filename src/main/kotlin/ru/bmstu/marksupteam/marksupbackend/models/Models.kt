@@ -170,13 +170,13 @@ data class Profile(
 
     val username: String,
 
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.ALL])
     val parent: Parent? = null,
 
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.ALL])
     val student: Student? = null,
 
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.ALL])
     val teacher: Teacher? = null
 ) {
     init {
@@ -192,7 +192,7 @@ data class VKIntegrationProfile(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.ALL])
     val profile: Profile,
 
     @Column(unique = true)
