@@ -25,3 +25,5 @@ interface ProfileRepository : JpaRepository<Profile, Long>
 interface VKIntegrationRepository: JpaRepository<VKIntegrationProfile, Long> {
     fun getVKIntegrationProfileByIdentifier(identifier: String): Optional<VKIntegrationProfile>
 }
+interface StudentRepository : JpaRepository<Student, Long>
+interface TeacherRepository : JpaRepository<Teacher, Long>

@@ -12,6 +12,8 @@ import ru.bmstu.marksupteam.marksupbackend.models.repos.ProfileRepository
 import ru.bmstu.marksupteam.marksupbackend.models.Student
 import ru.bmstu.marksupteam.marksupbackend.models.Teacher
 import ru.bmstu.marksupteam.marksupbackend.models.VKIntegrationProfile
+import ru.bmstu.marksupteam.marksupbackend.models.repos.StudentRepository
+import ru.bmstu.marksupteam.marksupbackend.models.repos.TeacherRepository
 import ru.bmstu.marksupteam.marksupbackend.models.repos.VKIntegrationRepository
 
 @Service
@@ -56,4 +58,11 @@ class VKIntegrationService(private val vkIntegrationRepository: VKIntegrationRep
 }
 
 @Service
-class StudentService()
+class StudentService(private val studentRepository: StudentRepository){
+    fun getStudentById(id: Long): Student = studentRepository.findById(id).orElse(null)
+}
+
+@Service
+class TeacherService(private val teacherRepository: TeacherRepository){
+    fun getTeacherById(id: Long): Teacher = teacherRepository.findById(id).orElse(null)
+}

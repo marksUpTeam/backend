@@ -2,6 +2,7 @@ package ru.bmstu.marksupteam.marksupbackend.models
 
 import jakarta.persistence.*
 import kotlinx.datetime.*
+import net.minidev.json.annotate.JsonIgnore
 
 
 @Entity
@@ -127,6 +128,7 @@ data class Teacher(
 
     val description: String,
 
+    @JsonIgnore
     @ManyToMany
     val assignedStudents: List<Student>
 )
@@ -156,6 +158,7 @@ data class Student(
 
     val description: String,
 
+    @JsonIgnore
     @ManyToMany
     val assignedTeachers: List<Teacher>,
 
@@ -188,9 +191,21 @@ data class Profile(
 }
 
 @Entity
-data class VKIntegrationProfile(
+data class Invitation(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
+
+    @Column(unique = true)
+    val identifier: String,
+
+    val role: Role,
+
+)
+
+@Entity
+data class VKIntegrationProfile(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long,
 
     @OneToOne(cascade = [CascadeType.ALL])
     val profile: Profile,
@@ -201,6 +216,10 @@ data class VKIntegrationProfile(
 
 enum class AssignmentStatus {
     Assigned, Completed, Defended
+}
+
+enum class Role {
+    Teacher, Student, Parent
 }
 
 @Converter(autoApply = true)
