@@ -166,6 +166,7 @@ data class Student(
     val disciplineGrades: List<DisciplineGrade>
 )
 
+
 @Entity
 data class Profile(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

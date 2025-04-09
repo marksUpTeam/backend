@@ -1,5 +1,6 @@
 package ru.bmstu.marksupteam.marksupbackend.services
 
+import org.hibernate.exception.DataException
 import org.springframework.stereotype.Service
 import ru.bmstu.marksupteam.marksupbackend.models.Assignment
 import ru.bmstu.marksupteam.marksupbackend.models.repos.AssignmentRepository
@@ -47,6 +48,16 @@ class ProfileService(private val profileRepository: ProfileRepository) {
     fun getAllProfiles(): List<Profile> = profileRepository.findAll()
     fun getProfileById(id: Long): Profile? = profileRepository.findById(id).orElse(null)
     fun modifyProfile(profile: Profile) {
+        if (profile.teacher != null){
+            if (profile.teacher!!.assignedStudents.isEmpty()){
+                throw Exception("Assigned students not filled")
+            }
+        }
+        else if (profile.student != null){
+            if (profile.student!!.assignedTeachers.isEmpty()){
+                throw Exception("Assigned teachers not filled")
+            }
+        }
         profileRepository.save(profile)
     }
 }

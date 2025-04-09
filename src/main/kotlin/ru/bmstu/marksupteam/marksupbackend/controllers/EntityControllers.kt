@@ -133,5 +133,21 @@ class FavouritesController(private val favouritesItemService: FavouritesItemServ
 
 
 @RestController
-@RequestMapping("/api/students")
-class StudentsController(private val vkIntegrationService: VKIntegrationService, private val profileService: ProfileService) {}
+@RequestMapping("/api/linker")
+class LinkerController(private val vkIntegrationService: VKIntegrationService, private val profileService: ProfileService) {
+    @GetMapping
+    fun getLinkerData(): ResponseEntity<List<Any>> {
+        val vkId = SecurityContextHolder.getContext().authentication.name
+        val profile = vkIntegrationService.getProfileByIdentifier(vkId)
+        if (profile == null) {
+            return ResponseEntity.notFound().build()
+        }
+        if (profile.profile.teacher != null){
+            return ResponseEntity.ok(profile.profile.teacher!!.assignedStudents)
+        }
+        else if (profile.profile.student != null){
+            return ResponseEntity.ok(profile.profile.student!!.assignedTeachers)
+        }
+        return ResponseEntity.badRequest().build()
+    }
+}
