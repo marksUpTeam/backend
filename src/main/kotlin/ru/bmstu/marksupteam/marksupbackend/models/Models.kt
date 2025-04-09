@@ -199,14 +199,37 @@ data class Invitation(
     @Column(unique = true)
     val identifier: String,
 
-    val role: Role,
+    @OneToMany
+    val childrenList: List<Student>? = null,
+
+    @OneToMany
+    val studentList: List<Student>? = null,
+
+    @OneToMany
+    val teacherList: List<Teacher>? = null
 
 )
+
+enum class InvitationType {
+    Parent, Teacher, Student
+}
+
+fun mapToInvitationType(invitation: Invitation): InvitationType {
+    if (invitation.childrenList != null) {
+        return InvitationType.Parent
+    }
+    else if (invitation.studentList != null) {
+        return InvitationType.Teacher
+    }
+    else if (invitation.teacherList != null) {
+        return InvitationType.Student
+    }
+}
 
 @Entity
 data class VKIntegrationProfile(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    val id: Long = 0,
 
     @OneToOne(cascade = [CascadeType.ALL])
     val profile: Profile,
@@ -219,9 +242,6 @@ enum class AssignmentStatus {
     Assigned, Completed, Defended
 }
 
-enum class Role {
-    Teacher, Student, Parent
-}
 
 @Converter(autoApply = true)
 class LocalDateConverter : AttributeConverter<LocalDate, java.time.LocalDate> {

@@ -1,18 +1,21 @@
 package ru.bmstu.marksupteam.marksupbackend.services
 
 import org.hibernate.exception.DataException
+import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.stereotype.Service
 import ru.bmstu.marksupteam.marksupbackend.models.Assignment
 import ru.bmstu.marksupteam.marksupbackend.models.repos.AssignmentRepository
 import ru.bmstu.marksupteam.marksupbackend.models.Class
 import ru.bmstu.marksupteam.marksupbackend.models.repos.ClassRepository
 import ru.bmstu.marksupteam.marksupbackend.models.FavouritesItem
+import ru.bmstu.marksupteam.marksupbackend.models.Invitation
 import ru.bmstu.marksupteam.marksupbackend.models.repos.FavouritesItemRepository
 import ru.bmstu.marksupteam.marksupbackend.models.Profile
 import ru.bmstu.marksupteam.marksupbackend.models.repos.ProfileRepository
 import ru.bmstu.marksupteam.marksupbackend.models.Student
 import ru.bmstu.marksupteam.marksupbackend.models.Teacher
 import ru.bmstu.marksupteam.marksupbackend.models.VKIntegrationProfile
+import ru.bmstu.marksupteam.marksupbackend.models.repos.InvitationRepository
 import ru.bmstu.marksupteam.marksupbackend.models.repos.StudentRepository
 import ru.bmstu.marksupteam.marksupbackend.models.repos.TeacherRepository
 import ru.bmstu.marksupteam.marksupbackend.models.repos.VKIntegrationRepository
@@ -76,4 +79,12 @@ class StudentService(private val studentRepository: StudentRepository){
 @Service
 class TeacherService(private val teacherRepository: TeacherRepository){
     fun getTeacherById(id: Long): Teacher = teacherRepository.findById(id).orElse(null)
+}
+
+@Service
+class InvitationService(private val invitationRepository: InvitationRepository){
+    fun getInvitationByIdentifier(identifier: String): Invitation? = invitationRepository.getInvitationByIdentifier(identifier).orElse(null)
+    fun deleteByIdentifier(identifier: String) {
+        invitationRepository.deleteInvitationByIdentifier(identifier)
+    }
 }

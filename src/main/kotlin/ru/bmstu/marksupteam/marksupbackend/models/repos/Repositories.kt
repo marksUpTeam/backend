@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import ru.bmstu.marksupteam.marksupbackend.models.Assignment
 import ru.bmstu.marksupteam.marksupbackend.models.Class
 import ru.bmstu.marksupteam.marksupbackend.models.FavouritesItem
+import ru.bmstu.marksupteam.marksupbackend.models.Invitation
 import ru.bmstu.marksupteam.marksupbackend.models.Profile
 import ru.bmstu.marksupteam.marksupbackend.models.Student
 import ru.bmstu.marksupteam.marksupbackend.models.Teacher
@@ -27,3 +28,7 @@ interface VKIntegrationRepository: JpaRepository<VKIntegrationProfile, Long> {
 }
 interface StudentRepository : JpaRepository<Student, Long>
 interface TeacherRepository : JpaRepository<Teacher, Long>
+interface InvitationRepository: JpaRepository<Invitation, Long> {
+    fun getInvitationByIdentifier(identifier: String): Optional<Invitation>
+    fun deleteInvitationByIdentifier(identifier: String)
+}
